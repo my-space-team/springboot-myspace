@@ -16,6 +16,7 @@ public class CartProductController {
     @Autowired
     private CartProductService cartProductService;
 
+    @PostMapping("/save") // 상품 담기
     public ResponseEntity<CartProduct> save(@RequestBody CartProduct cartProduct) {
         try {
             CartProduct addedProduct = cartProductService.save(cartProduct);
@@ -28,7 +29,8 @@ public class CartProductController {
         return new ResponseEntity<CartProduct>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/save") // 상품 담기
+
+
 
     @DeleteMapping("/delete/{idx}") // 상품 삭제
     public ResponseEntity<Integer> delete(@PathVariable int idx) {
