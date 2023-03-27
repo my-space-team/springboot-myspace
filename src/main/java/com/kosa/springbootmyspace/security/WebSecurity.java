@@ -16,7 +16,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private Environment env;
 
-    public WebSecurity(Environment env, MemberService memberService, BCryptPasswordEncoder bCryptPasswordEncoder){
+    public WebSecurity(Environment env, MemberService memberService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.env = env;
         this.memberService = memberService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -27,7 +27,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-//                .antMatchers("/member/save").permitAll()
+                // .antMatchers("/member/save").permitAll()
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -45,8 +45,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     }
 
     private AuthenticationFilter getAuthenticationFiler() throws Exception {
-        AuthenticationFilter authenticationFilter
-                = new AuthenticationFilter(authenticationManager());
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager());
 
         return authenticationFilter;
     }
@@ -55,6 +54,5 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(memberService).passwordEncoder(bCryptPasswordEncoder);
     }
-
 
 }

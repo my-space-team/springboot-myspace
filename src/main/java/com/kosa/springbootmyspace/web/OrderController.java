@@ -1,6 +1,7 @@
 package com.kosa.springbootmyspace.web;
 
 import com.kosa.springbootmyspace.domain.Order;
+import com.kosa.springbootmyspace.service.CartProductService;
 import com.kosa.springbootmyspace.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private CartProductService cartProductService;
 
     @PostMapping("/save")
     public ResponseEntity<Order> save(@RequestBody Order order) {
@@ -90,16 +94,33 @@ public class OrderController {
     }
 
     @GetMapping("/recently/{idx}")
-    public ResponseEntity<Order> findByMemberOrderByIdxAsc(@PathVariable int idx){
-        try{
+    public ResponseEntity<Order> findByMemberOrderByIdxAsc(@PathVariable int idx) {
+        try {
             Order findOrder = orderService.findByMemberOrderByIdxAsc(idx);
-            if(findOrder !=null){
+            if (findOrder != null) {
                 return new ResponseEntity<Order>(findOrder, HttpStatus.OK);
             }
-        } catch(Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
         }
-        return  new ResponseEntity<Order>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<Order>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/memberOrder/{idx}")
+    public ResponseEntity<List<Order>> findMemberOrderList(@PathVariable int idx) {
+        try {
+            List<Order> findOrderList = orderService.findAllByMemberIdx(idx);
+            findOrderList.forEach(
+                    order -> cartProductService.findByCart(order.getCart().getIdx())
+                            .forEach(cartProduct -> order.getCartProductList().add(cartProduct)));
+            if (findOrderList != null) {
+                return new ResponseEntity<>(findOrderList, HttpStatus.OK);
+            }
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return new ResponseEntity<List<Order>>(HttpStatus.NO_CONTENT);
     }
 
 }

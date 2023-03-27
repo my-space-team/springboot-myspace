@@ -1,12 +1,7 @@
 package com.kosa.springbootmyspace.web;
 
-import com.kosa.springbootmyspace.domain.Cart;
 import com.kosa.springbootmyspace.domain.CartProduct;
-import com.kosa.springbootmyspace.domain.Product;
 import com.kosa.springbootmyspace.service.CartProductService;
-import com.kosa.springbootmyspace.service.CartService;
-import com.kosa.springbootmyspace.service.ProductService;
-
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;

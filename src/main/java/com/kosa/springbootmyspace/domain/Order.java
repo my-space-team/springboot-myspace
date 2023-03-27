@@ -1,6 +1,8 @@
 package com.kosa.springbootmyspace.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -63,4 +67,8 @@ public class Order {
     @OneToOne
     @JoinColumn(name = "cart_idx")
     private Cart cart;
+
+    @Transient
+    private List<CartProduct> cartProductList = new ArrayList<CartProduct>();
+
 }

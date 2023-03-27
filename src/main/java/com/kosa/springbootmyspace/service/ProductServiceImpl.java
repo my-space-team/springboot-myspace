@@ -43,19 +43,16 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll();
     }
 
-//    @Override
-//    public Product findById(int idx) {
-//        return productRepository.findById(idx).get();
-//    }
-
     @Override
     public Product findById(int idx) {
+
         Product product=productRepository.findById(idx).get();
         log.info("product -> ", product);
         int reviewCount=reviewRepository.findByProductIdx(idx).size();
         System.out.println("reviewCount : "+reviewCount);
+
         float allTotal = 0;
-        if(reviewCount!=0) {
+        if (reviewCount != 0) {
             for (Review review : reviewRepository.findByProductIdx(idx)) {
 
                 List<Score> scores = scoreRepository.findByReviewIdx(review.getIdx());
@@ -65,8 +62,8 @@ public class ProductServiceImpl implements ProductService {
                 }
             }
             float allTotalAvg = allTotal / reviewCount;
-            System.out.println("allTotal : "+allTotal);
-            System.out.println("allTotalAvg : "+allTotalAvg);
+            System.out.println("allTotal : " + allTotal);
+            System.out.println("allTotalAvg : " + allTotalAvg);
             product.setAllTotal(allTotalAvg);
         }
 
