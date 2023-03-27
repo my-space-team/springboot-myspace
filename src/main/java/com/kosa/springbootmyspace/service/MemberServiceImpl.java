@@ -11,7 +11,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.kosa.springbootmyspace.domain.Cart;
 import com.kosa.springbootmyspace.domain.Member;
+import com.kosa.springbootmyspace.repository.CartRepository;
 import com.kosa.springbootmyspace.repository.MemberRepository;
 
 @Service
@@ -22,11 +24,14 @@ public class MemberServiceImpl implements MemberService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    private CartRepository cartRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Member member = memberRepository.findByLoginId(username);
 
-        if(member == null){
+        if (member == null) {
             throw new UsernameNotFoundException(username + ": not found");
         }
 
@@ -57,9 +62,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member save(Member member) {
-        System.out.println(member);
         member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
-        return memberRepository.save(member);
+        Member saveMember = memberRepository.save(member);
+        Cart cart = new Cart();
+        cart.setMember(saveMember);
+        cartRepository.save(cart);
+        return saveMember;
     }
 
     @Override
