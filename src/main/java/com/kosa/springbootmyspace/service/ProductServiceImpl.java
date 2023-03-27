@@ -8,12 +8,14 @@ import com.kosa.springbootmyspace.domain.Review;
 import com.kosa.springbootmyspace.domain.Score;
 import com.kosa.springbootmyspace.repository.ReviewRepository;
 import com.kosa.springbootmyspace.repository.ScoreRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kosa.springbootmyspace.domain.Product;
 import com.kosa.springbootmyspace.repository.ProductRepository;
 
+@Slf4j
 @Service
 public class ProductServiceImpl implements ProductService {
 
@@ -49,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product findById(int idx) {
         Product product=productRepository.findById(idx).get();
-
+        log.info("product -> ", product);
         int reviewCount=reviewRepository.findByProductIdx(idx).size();
         System.out.println("reviewCount : "+reviewCount);
         float allTotal = 0;
