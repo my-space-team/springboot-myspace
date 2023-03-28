@@ -1,6 +1,7 @@
 package com.kosa.springbootmyspace.web;
 
 import com.kosa.springbootmyspace.domain.Score;
+import com.kosa.springbootmyspace.service.ReviewService;
 import com.kosa.springbootmyspace.service.ScoreService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,13 @@ public class ScoreController {
     @Autowired
     private ScoreService scoreService;
 
-    @PostMapping("/save")
-    public ResponseEntity<Score> save(@RequestBody Score score) {
+    @Autowired
+    private ReviewService reviewService;
+
+    @PostMapping("/save/{reviewIdx}")
+    public ResponseEntity<Score> save(@RequestBody Score score, @PathVariable int reviewIdx) {
         try {
+            score.setReview(reviewService.findById(reviewIdx));
             Score saveScore = scoreService.save(score);
 
             if (saveScore != null) {

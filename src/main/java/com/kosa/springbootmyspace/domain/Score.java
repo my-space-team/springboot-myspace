@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
@@ -31,10 +32,11 @@ public class Score {
     @Column(nullable = false)
     private int delivery;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_idx")
     @JsonIgnore
     private Review review;
+
 
     @Column
     private float total;
